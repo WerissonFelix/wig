@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <link rel="stylesheet" href="../static/styles/styles.css">
+        <link rel="stylesheet" href="../static/styles/bootstrap.min.css">
+        <title>WiGames</title>
+    </head>
+<body>
+    <main>
+        <h1 id="azul">CRUD Games</h1>
+        <hr>
+        <h2>Criar Games</h2>
+        <form action="/criar" method="post">
+            <div class="mb-3">
+                <label class="form-label">Nome do Jogo: </label>
+                <input type="text" name="nome" class="form-control" placeholder="Digite o nome do seu jogo" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Desenvolvedor(a):</label>
+                <input type="text" name="desenvolvedora" class="form-control" placeholder="Digite o nome da desenvolvedora" required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Descrição:</label>
+                <textarea name="descricao" rows='5' class="form-control" placeholder="Digite a descrição do game" required></textarea>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Inserir"/>
+        </form>
+        {% if games|length > 0: %}
+            <h2>Games:</h2>
+            <div class="flex-container">
+                {% for game in games %}
+                    <div class="inner"></div>
+                    <div class="zoom-in-hover card shadow p-3 mb-5 bg-body-tertiary rounded" id="game_card" style="width: 18rem; border-color: {{random_color}}">
+                        <div class="card-body ">
+                            <h5 class="card-title">{{ game.getNome() }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ game.getDev() }}</h6>
+                            <p class="card-text">{{ game.getDesc() }}</p>
+                        </div>   
+                    </div>             
+                {% endfor %}
+            </div>
+        
+        {% else %}
+            <div class="mb-3">
+                <p>Nenhum jogo cadastrado ainda.</p>
+            </div>
+        {% endif %}
+        
+        <hr>
+
+        <h2>Atualizar Games:</h2>
+        <form action="/alterar" method="post">
+            <div class="mb-3">
+                <label class="form-label">Nome atual do jogo: </label>
+                <input type="text" name="old_name" class="form-control" placeholder="Nome atual"
+            required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Novo nome do jogo:</label>
+                <input type="text" name="new_name" class="form-control" placeholder="Novo nome"
+            required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nome do(a) desenvolvedor(a):</label>
+                <input type="text" name="new_dev"  class="form-control" placeholder="Novo ou Atual" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descrição:</label> 
+                <textarea name="new_desc" placeholder="Descrição" class="form-control" rows="5" required></textarea>
+            </div>
+            
+            <input type="submit" class="btn btn-primary" value="Alterar"/>
+        </form>
+
+        <hr>
+        
+        <h2>Apagar Game:</h2>
+        <form action="/apagar" method="post">
+            <div class="mb-3">
+                <label class="form-label">Nome do Jogo:</label>
+                <input type="text" name="nome" class="form-control" placeholder="Nome do jogo" required>
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Apagar"/>
+        </form>
+   
+    </main>
+</body>
+</html>
+
+{% endblock %}
